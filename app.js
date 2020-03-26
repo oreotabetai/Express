@@ -1,11 +1,13 @@
-const http = require("http");
+// npm で読み込んだモジュールを使える npm install がいる
+const express = require('express');
+const app = express();
 
-http.createServer(function (request, response) {
+// パスにアクセスされるたびに呼び出されるコールバック関数を定義する
+app.get('/', function (req, res) {
+    // レスポンスを返す
+    res.send('Hellow World');
+});
 
-    // responseで返答するheader
-    response.writeHead(200, { 'Content-Type': 'text/p;ain' });
-    // responseで返答するbody
-    response.end('Hellow World\n');
-}).listen(8000);
-
-console.log('Server running ');
+app.listen(8000, function () {
+    console.log('listening on port 8000');
+});
