@@ -1,0 +1,10 @@
+extends layout
+
+block content
+
+h1 loginp.caution = error
+// login.jsと紐付け
+form(action="/login", method="post")
+input(type="text", name='userName', placeholder='username')
+input(type='password', name='password')
+input(type='submit', value='Login')
