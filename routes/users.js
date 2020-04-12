@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+// オブジェクトを渡したい
 var package = {
   title: 'jadeの作り方',
   description: 'cool page',
@@ -8,17 +8,14 @@ var package = {
     'syosinn',
     'beginner'
   ]
-
 };
 /* GET users listing. */
 router.get('/', function (req, res, next) {
   // 自作のjadeファイルを適用
-
-  res.render('users');
+  // packageオブジェクトを渡す
+  res.render('users', {
+    package: package
+  });
 });
 
-// users/cool
-router.get('/cool', function (req, res, next) {
-  res.send('You`re so cool');
-});
 module.exports = router;

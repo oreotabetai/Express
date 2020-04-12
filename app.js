@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // indexRouterじゃないとエラー 上で定義
 app.use('/', index);
 app.use('/users', users);
+// app.use('/layout', layout);
 
 // 404のレスポンス用
 app.use(function (req, res, next) {

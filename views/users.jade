@@ -1,8 +1,17 @@
+extends layout
 doctype html
 html
-    head
-        meta(charset='UTF-8')
-        title タイトルタイトル
-    body
-        h1 やっほ
-        p ほげほげ
+  head
+    meta(charset='UTF-8')
+    // titleを上書き
+    block title 
+      title usersのタイトル
+    
+  body
+    block content
+        h1 block contentを上書き
+        p 見出し
+        h1 Expressから渡されたオブジェクトを参照する
+        p #{package.title}
+        p= package.description
+        p!= package.keywords
