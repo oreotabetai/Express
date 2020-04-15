@@ -9,6 +9,7 @@ var session = require('express-session');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
+var mongo = require('./routes/mongo');
 
 var app = express();
 
@@ -29,7 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 // indexRouterじゃないとエラー 上で定義
 app.use('/', index);
 app.use('/users', users);
-// app.use('/layout', layout);
+// mongoを扱うページ
+app.use('/mongo', mongo);
 
 // 404のレスポンス用
 app.use(function (req, res, next) {
