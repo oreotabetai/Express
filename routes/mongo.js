@@ -4,7 +4,6 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 // デフォルト
-//const mongoDB = ('mongodb://localhost/test', { useNewUrlParser: true });
 mongoose.connect('mongodb://localhost/test', { useUnifiedTopology: true, useNewUrlParser: true });
 
 // グローバルプロセスのライブラリを使用する
@@ -19,14 +18,10 @@ db.once('open', () => {
     console.log('DB接続中...');
 });
 
-const kittySchema = mongoose.Schema({
+const kittySchema = new mongoose.Schema({
     name: String
 });
 
-// const Kitten = mongoose.model('Kitten', kittySchema); // モデル作成1
-
-// const silence = new Kitten({ name: 'Silence' });
-// console.log('子猫の名前: ', silence.name);
 // 自作メソッド作成
 kittySchema.methods.speak = function () {
     const noName = "名前がない";
@@ -36,18 +31,63 @@ kittySchema.methods.speak = function () {
 
 // 名前を登録せず実行する
 kittySchema.methods.speak();
-// モデル作成2
-const Kitten = mongoose.model('Kitten', kittySchema);
+// kittyモデルを作成
+const Kitten = db.model('kitten', kittySchema);
 const tama = new Kitten({ name: 'Tama' }); // 名前を登録
 tama.speak();
 
 // 保存 async/awaitで非同期の処理が終わった後に実行
 async function tamaFunc() {
-    await tama.save(() => {
-        if (err) console.err(err);
-        console.log(kitten);
+    await tama.save((err, tama) => {
+        if (err) { console.error(err); }
+        else {
+            console.log("保存");
+            console.log(tama);
+        }
+    });
+    // ドキュメントの取得
+    Kitten.find((err, tama) => {
+        if (err) {
+            console.error(err);
+        }
+        else {
+            console.log("全てのデータの取得");
+            console.log(tama);
+        }
     });
 }
+// Tamaをmikeに更新する
+function tamaupdate() {
+    Kitten.findOne({ name: "Tama" }, function (err, tama) {
+        if (err) { console.error(err); }
+        else {
+            // 名前の更新
+            console.log("Tamaのデータを1つ取得");
+            tama.name = "mike";
+            tama.save((err) => {
+                if (err) console.error(err);
+            });
+            console.log(tama);
+        }
+    });
+}
+
+function tamadelete() {
+    Kitten.findOne({ name: "mike" }, function (err, tama) {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log("mikeを削除")
+            tama.remove();
+            console.log(tama);
+        }
+    });
+}
+
+tamaFunc();
+tamaupdate();
+tamadelete();
+
 router.get('/', function (req, res, next) {
     res.render('mongo');
 });
